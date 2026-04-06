@@ -37,7 +37,9 @@ public:
 			"Объём: " << capacity << "Тб" << 
 			"Состояние: " << (int)state << endl;
 	}
-	void get_id(){}
+	int get_id() { return id; }
+	int get_capacity() { return capacity; }
+	State get_state() { return state; }
 
 };
 
@@ -54,31 +56,41 @@ public:
 		cout << "Введите ID пользователя: \n";
 		cin >> user_id;
 		cout << "Введите имя пользователя: \n";
-		cin >> name;
+		cin >> ws;
+		cin.getline(name, 50);
 	}
-	void print(){
+	void print() const {
 		cout << "\nID сервера: " << server_id <<
 			"\nID пользователя: " << user_id <<
 			"\nИмя пользователя: " << name << endl;
 	}
-	void get_id(){}
+	int get_server_id() { return server_id; }
+	int get_user_id() { return user_id; }
 };
 
+//узел-сервер
 struct NodeServer {
 	Server data;
 	NodeServer* next;
 };
 
+//узел-пользователь
 struct NodeUser {
 	User data;
 	NodeUser* next;
 };
 
+//список серверов
 class ServerList {
 private:
 	NodeServer* head;
+public:
+	ServerList() {
+		head = NULL;
+	}
 };
 
+//список пользователей
 class UserList {
 private:
 	NodeUser* head;
@@ -101,22 +113,51 @@ public:
 				current = current->next;
 			}
 			current->next = node_user_ptr;
+		}	
+	}
+
+	void print() {
+		if (head == NULL) {
+			cout << "Список пуст.\n";
+			return;
 		}
+
+		NodeUser* current = head;
+
+		while (current != NULL) {
+			current->data.print();
+			current = current->next;
+		}
+	}
+
+	void del() {
+		int pos;
+		cout << "Выбериет эл-т для удаления: \n";
+		cin >> pos;
+
+		if (head == NULL) {
+			cout << "Список пуст.\n";
+			return;
+		}
+
+		NodeUser* current = head;
+		while (current->data.get_server_id() != pos)
+			current = current->next;
+
 	}
 };
 
-void menu() {
-
-	cout << "\n1. Добавить\n";
-	cout << "2. Вывод\n";
-	cout << "3. Удалить\n";
-	cout << "4. Поиск по пользователю\n";
-	cout << "5. Пользователи сервера\n";
-	cout << "6. Свободные сервера\n";
-	cout << "7. Сортировка\n";
-	cout << "8. Сохранить\n";
-	cout << "9. Загрузить\n";
-	cout << "10. Выход\n";
+//меню
+void print_menu() {
+	cout << "----------------------------------СЕРВЕРА------------------------------------\n";
+	cout << ":: 1. Добавить сервер\n";
+	cout << ":: 2. Удалить сервер\n";
+	cout << ":: 3. Вывод серверов\n";
+	cout << "--------------------------------ПОЛЬЗОВАТЕЛИ---------------------------------\n";
+	cout << ":: 4. Добавить пользователя\n";
+	cout << ":: 5. Удалить пользователя\n";
+	cout << ":: 6. Вывод пользователей\n";
+	cout << "---------------------------------------\n";
 }
 
 int main() {
@@ -127,20 +168,26 @@ int main() {
 	int cmd = 0;
 
 	while (cmd != 10) {
-		menu();
+		print_menu();
 		cin >> cmd;
 		system("cls");
 
 		switch (cmd) {
-		case 1: Users.add(); break;
-		//case 2: list.print(); break;
-		//case 3: list.remove(); break;
-		//case 4: list.findByUser(); break;
-		//case 5: list.findUsersByServer(); break;
-		//case 6: list.freeServers(); break;
-		//case 7: list.sortByID(); break;
-		//case 8: list.save(); break;
-		//case 9: list.load(); break;
+		case 4:
+			Users.add();
+			system("pause");
+			system("cls");
+			break;
+		case 5:
+			Users.del();
+			system("pause");
+			system("cls");
+			break;
+		case 6:
+			Users.print();
+			system("pause");
+			system("cls");
+			break;
 		}
 	}
 

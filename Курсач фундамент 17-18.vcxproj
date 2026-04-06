@@ -123,8 +123,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="17-18Main.cpp" />
     <ClCompile Include="Test.cpp" />
-    <ClCompile Include="Курсач фундамент 17-18.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
